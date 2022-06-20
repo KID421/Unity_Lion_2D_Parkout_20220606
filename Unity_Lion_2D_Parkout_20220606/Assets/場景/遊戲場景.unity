@@ -6773,6 +6773,7 @@ GameObject:
   - component: {fileID: 1135075741}
   - component: {fileID: 1135075742}
   - component: {fileID: 1135075743}
+  - component: {fileID: 1135075744}
   m_Layer: 0
   m_Name: "\u5FCD\u8005\u9F9C"
   m_TagString: Untagged
@@ -6882,12 +6883,12 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 1.5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &1135075742
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -6916,8 +6917,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09b391895bc3224a84753bcc32504a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedRun: 3.5
-  heightJump: 350
+  speedRun: 10
+--- !u!114 &1135075744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135075737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e22be5b3421bbc4dab4e67e34da0e25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heightJump: 500
 --- !u!1 &1175130414
 GameObject:
   m_ObjectHideFlags: 0
@@ -7040,7 +7053,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1193913249
 Transform:
   m_ObjectHideFlags: 0
@@ -7081,6 +7094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turtle: {fileID: 1135075737}
+  startPoint: {fileID: 1175130417}
 --- !u!1 &1764248880
 GameObject:
   m_ObjectHideFlags: 0
@@ -7232,7 +7246,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7785088, y: 1}
+    m_SensorSize: {x: 1.7792453, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
