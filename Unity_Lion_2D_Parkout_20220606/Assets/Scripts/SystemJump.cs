@@ -79,6 +79,9 @@ namespace KID
             }
         }
 
+        /// <summary>
+        /// 跳躍推力
+        /// </summary>
         private void JumpForce()
         {
             // 如果 點擊跳躍 並且 && 在地板上

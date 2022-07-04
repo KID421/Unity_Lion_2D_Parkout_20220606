@@ -13,6 +13,8 @@ namespace KID
         private SystemRun systemRun;
         [SerializeField, Header("跳躍系統")]
         private SystemJump systemJump;
+        [SerializeField, Header("結束管理器")]
+        private ManagerFinal managerFinal;
 
         #region 其中一個物件有勾選 Is Trigger
         // 兩個物件碰撞時執行一次
@@ -25,6 +27,8 @@ namespace KID
             {
                 systemRun.enabled = false;      // 關閉跑步系統
                 systemJump.enabled = false;     // 關閉跳躍系統
+                managerFinal.enabled = true;    // 啟動結束管理器
+                managerFinal.stringTitle = "恭喜你過關了~";
             }
         }
 
