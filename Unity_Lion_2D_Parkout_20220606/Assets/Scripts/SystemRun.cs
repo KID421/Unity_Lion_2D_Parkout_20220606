@@ -42,7 +42,7 @@ namespace KID
         /// </summary>
         private void Run()
         {
-            print("跑步中~");
+            // print("跑步中~");
             rig.velocity = new Vector2(speedRun, rig.velocity.y);
         }
         #endregion
@@ -70,6 +70,19 @@ namespace KID
 
             // 呼叫方法：方法名稱(對應的引數)；
             Run();
+        }
+
+        // 此元件被勾選時執行一次
+        private void OnEnable()
+        {
+            
+        }
+
+        // 此元件被取消時執行一次
+        private void OnDisable()
+        {
+            // 加速度歸零
+            rig.velocity = Vector3.zero;
         }
         #endregion
     }
