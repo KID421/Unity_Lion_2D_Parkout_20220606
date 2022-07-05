@@ -18,11 +18,16 @@ namespace KID
         private Color colorCheckGround = new Color(1, 0, 0.2f, 0.5f);
         [SerializeField, Header("檢查地板圖層")]
         private LayerMask layerCheckGround;
+        [SerializeField, Header("跳躍動畫參數")]
+        private string nameJump = "開關跳躍";
+        [SerializeField, Header("跳躍音效")]
+        private AudioClip soundJump;
 
         private Animator ani;
         private Rigidbody2D rig;
         private bool clickJump;
         private bool isGround;
+        private AudioSource aud;
         #endregion
 
         #region 事件
@@ -41,6 +46,7 @@ namespace KID
         {
             ani = GetComponent<Animator>();
             rig = GetComponent<Rigidbody2D>();
+            aud = GetComponent<AudioSource>();
         }
 
         // Input API 建議在 Update 呼叫
@@ -49,12 +55,18 @@ namespace KID
         {
             JumpKey();
             CheckGround();
+            UpdateAnimator();
         }
 
         // 一秒固定 50 次
         private void FixedUpdate()
         {
             JumpForce();
+        }
+
+        private void OnDisable()
+        {
+            ani.SetBool(nameJump, false);
         }
         #endregion
 
@@ -89,6 +101,8 @@ namespace KID
             {
                 rig.AddForce(new Vector2(0, heightJump));
                 clickJump = false;
+                // 音效來源.播放一次音效(音效片段，音量)
+                aud.PlayOneShot(soundJump, Random.Range(0.7f, 1.2f));
             }
         }
 
@@ -102,6 +116,14 @@ namespace KID
             // print("碰到的物件：" + hit.name);
 
             isGround = hit;
+        }
+
+        /// <summary>
+        /// 更新動畫
+        /// </summary>
+        private void UpdateAnimator()
+        {
+            ani.SetBool(nameJump, !isGround);
         }
         #endregion
     }
