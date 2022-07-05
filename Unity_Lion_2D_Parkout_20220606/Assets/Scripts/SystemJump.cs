@@ -23,16 +23,10 @@ namespace KID
         [SerializeField, Header("跳躍音效")]
         private AudioClip soundJump;
 
-        [SerializeField]
-        private Vector3 v3Size = Vector3.one;
-        [SerializeField]
-        private Vector3 v3Offset;
-
         private Animator ani;
         private Rigidbody2D rig;
         private bool clickJump;
         private bool isGround;
-        private bool isWall;
         private AudioSource aud;
         #endregion
 
@@ -46,7 +40,6 @@ namespace KID
             // 2. 繪製圖示
             // transform.position 當前物件的座標
             Gizmos.DrawCube(transform.position + v3CheckGroundOffset, v3CheckGroundSize);
-            Gizmos.DrawCube(transform.position + transform.TransformDirection(v3Offset), v3Size);
         }
 
         private void Awake()
@@ -104,10 +97,9 @@ namespace KID
         private void JumpForce()
         {
             // 如果 點擊跳躍 並且 && 在地板上
-            if (clickJump && (isGround || isWall))
+            if (clickJump && isGround)
             {
-                if (isWall) rig.AddForce(transform.right * 2000 + new Vector3(0, heightJump));
-                else rig.AddForce(new Vector2(0, heightJump));
+                rig.AddForce(new Vector2(0, heightJump));
 
                 clickJump = false;
                 // 音效來源.播放一次音效(音效片段，音量)
@@ -123,10 +115,8 @@ namespace KID
             // 2D 碰撞器 = 2D 物理.覆蓋盒型區域(中心點，尺寸，角度，圖層)；
             Collider2D hit = Physics2D.OverlapBox(transform.position + v3CheckGroundOffset, v3CheckGroundSize, 0, layerCheckGround);
             // print("碰到的物件：" + hit.name);
-            Collider2D hitWall = Physics2D.OverlapBox(transform.position + transform.TransformDirection(v3Offset), v3Size, 0, layerCheckGround);
 
             isGround = hit;
-            isWall = hitWall;
         }
 
         /// <summary>
