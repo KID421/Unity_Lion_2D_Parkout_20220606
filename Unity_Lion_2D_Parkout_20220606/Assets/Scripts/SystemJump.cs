@@ -30,6 +30,22 @@ namespace KID
         private AudioSource aud;
         #endregion
 
+        #region 牆跳
+        [SerializeField, Header("牆跳牆度"), Range(0, 3000)]
+        private float heightJumpWall = 350;
+        [SerializeField, Header("檢查牆壁尺寸")]
+        private Vector3 v3CheckWallSize = Vector3.one;
+        [SerializeField, Header("檢查牆壁位移")]
+        private Vector3 v3CheckWallOffset;
+        [SerializeField, Header("檢查牆壁顏色")]
+        private Color colorCheckWall = new Color(0, 1, 0.2f, 0.5f);
+        [SerializeField, Header("檢查牆壁圖層")]
+        private LayerMask layerCheckWall;
+
+        private SystemRun systemRun;
+        private bool isWall;
+        #endregion
+
         #region 事件
         // 繪製圖示
         // 在編輯器內繪製輔助用的線條、形狀或圖片：遊戲內不會出現
@@ -40,6 +56,10 @@ namespace KID
             // 2. 繪製圖示
             // transform.position 當前物件的座標
             Gizmos.DrawCube(transform.position + v3CheckGroundOffset, v3CheckGroundSize);
+
+            /* 牆跳 */
+            Gizmos.color = colorCheckWall;
+            Gizmos.DrawCube(transform.position + transform.TransformDirection(v3CheckWallOffset), v3CheckWallSize);
         }
 
         private void Awake()
@@ -47,6 +67,7 @@ namespace KID
             ani = GetComponent<Animator>();
             rig = GetComponent<Rigidbody2D>();
             aud = GetComponent<AudioSource>();
+            systemRun = GetComponent<SystemRun>();
         }
 
         // Input API 建議在 Update 呼叫
@@ -56,12 +77,15 @@ namespace KID
             JumpKey();
             CheckGround();
             UpdateAnimator();
+
+            CheckWall();
         }
 
         // 一秒固定 50 次
         private void FixedUpdate()
         {
             JumpForce();
+            JumpWallForce();
         }
 
         private void OnDisable()
@@ -108,6 +132,20 @@ namespace KID
         }
 
         /// <summary>
+        /// 牆跳力道
+        /// </summary>
+        private void JumpWallForce()
+        {
+            if (clickJump && isWall)
+            {
+                clickJump = false;
+                float y = transform.eulerAngles.y;
+                transform.eulerAngles = new Vector3(0, y == 0 ? 180 : 0, 0);
+                rig.AddForce(new Vector3(0, heightJump) + transform.right * heightJumpWall);
+            }
+        }
+
+        /// <summary>
         /// 檢查是否碰到地板
         /// </summary>
         private void CheckGround()
@@ -117,6 +155,22 @@ namespace KID
             // print("碰到的物件：" + hit.name);
 
             isGround = hit;
+
+            if (isGround) systemRun.enabled = true;
+        }
+
+        private void ResetSystemRun()
+        {
+            systemRun.enabled = true;
+        }
+
+        /// <summary>
+        /// 檢查是否碰到牆壁
+        /// </summary>
+        private void CheckWall()
+        {
+            Collider2D hit = Physics2D.OverlapBox(transform.position + transform.TransformDirection(v3CheckWallOffset), v3CheckWallSize, 0, layerCheckWall);
+            isWall = hit;
         }
 
         /// <summary>

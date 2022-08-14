@@ -43,7 +43,12 @@ namespace KID
         private void Run()
         {
             // print("跑步中~");
-            rig.velocity = new Vector2(speedRun, rig.velocity.y);
+            float h = Input.GetAxisRaw("Horizontal");
+            rig.AddForce(new Vector2(speedRun * h, 0));
+
+            if (Mathf.Abs(h) < 0.1f) return;
+
+            transform.eulerAngles = new Vector3(0, h > 0 ? 0 : 180, 0);
         }
         #endregion
 
@@ -69,6 +74,11 @@ namespace KID
             // print("<color=yellow>更新事件執行中~</color>");
 
             // 呼叫方法：方法名稱(對應的引數)；
+            // Run();
+        }
+
+        private void FixedUpdate()
+        {
             Run();
         }
 
@@ -82,7 +92,7 @@ namespace KID
         private void OnDisable()
         {
             // 加速度歸零
-            rig.velocity = Vector3.zero;
+            // rig.velocity = Vector3.zero;
         }
         #endregion
     }
